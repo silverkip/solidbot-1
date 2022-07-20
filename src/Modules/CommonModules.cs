@@ -122,7 +122,7 @@ namespace Discord_Bot
         [Summary("Set a reminder (currently up to 24 days while this command is a WIP). `remindme <message>, #d #hr #m`. Combinations of days, hours, or minutes are accepted.")]
         public async Task RemindMe([Remainder] string message = "")
         {
-            Match stringMatch = Regex.Match(message, @"\b(?<remindMessage>.+),\s+(?<remindTime>\d+\s*\w*\s*){1,3}");
+            Match stringMatch = Regex.Match(message, @"\b(?<remindMessage>.*)+,\s+(?<remindTime>\d\s*\w*\s*){1,3}");
             string remindMessage;
 
             if (stringMatch.Groups["remindMessage"].Captures.Count > 0) { remindMessage = stringMatch.Groups["remindMessage"].Captures[0].Value; }
@@ -190,6 +190,13 @@ namespace Discord_Bot
             // Call subroutine to handle the reminder
             await ReplyAsync(message: $"{Context.Message.Author.Mention}",
                              embed: Functions.HandleReminder(sleepTime, remindMessage, Context).Build());
+        }
+
+        [Command("steamsale")] // Command name.
+        [Summary("Check for steam sale")] // Command summary.
+        public async Task SteamSale() {
+            SteamSaleCheck.Index();
+            await ReplyAsync($"Coming soon, please look forward to it.");
         }
     }
 }
